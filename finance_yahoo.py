@@ -122,7 +122,7 @@ for date,url in itertools.izip(dates,urls):
             browser.get(url)
             time.sleep(3)
 
-    symbol=re.search('(.*)[(](.*)[)]',name).group(2)
+    symbol=re.search('(.*) [(](.*)[)]',name).group(2)
 
     current_day_stock_value=browser.find_element_by_xpath('//*[@id="quote-header-info"]/div[3]/div[1]/div/span[1]').text
     number2=browser.find_element_by_xpath('//*[@id="quote-header-info"]/div[3]/div[1]/div/span[2]').text

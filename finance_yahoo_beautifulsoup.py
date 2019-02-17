@@ -35,7 +35,7 @@ while True:
         continue
 
     if month!=month1 or year!=year1:
-        print 'Please enter the same year and month!'
+        print 'Please enter correct date range!'
         continue
 
     if month=='01' or month=='03' or month=='05' or month=='07' or month=='10' or month=='12':
@@ -47,10 +47,10 @@ while True:
     elif month=='02':
         day_all='28'
     else:
-        print 'Please enter correct date!'
+        print 'Please enter correct date range!'
         continue
     if int(day)>int(day_all) or int(day1)>int(day_all) or int(day)>int(day1):
-        print 'Please enter correct date!'
+        print 'Please enter correct date range!'
         continue
     else:
         break
@@ -98,7 +98,7 @@ with open('links.csv') as f:
 dates = columns["Date"]
 urls = columns["Url"]
 
-with open('finance_yahoo_'+data_for_csv_name+'.csv', 'wb') as myfile:
+with open('finance_yahoo '+data_for_csv_name+'.csv', 'wb') as myfile:
     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
     wr.writerow(["Date","Company","Symbol","Current Day Stock Value","Actual $ Day Change","Percentage Day Change","Previous Close","Open","Bid","Ask","Day's Range","52 Week Range","Volume","Avg. Volume",
                  "Market Cap","Beta (3Y Monthly)","PE Ratio (TTM)","EPS (TTM)","Earnings Date","Forward Dividend & Yield","Ex-Dividend Date","1y Target Est","Url"])
@@ -174,7 +174,7 @@ for date,url in itertools.izip(dates,urls):
     print url
     c+=1
 
-    with open('finance_yahoo_'+data_for_csv_name+'.csv', 'ab') as myfile:
+    with open('finance_yahoo '+data_for_csv_name+'.csv', 'ab') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow([date,company_name,symbol,current_day_stock_value,actual_day_change,percentage_day_change,previous_close,open1,bid,ask,days_range,week_range_52,volume,avg_volume,
                      market_cap,beta_3y_monthly,pe_ratio_ttm,eps_ttm,earnings_date,forward_dividend_yield,ex_dividend_date,target_est_1y,url])
