@@ -58,7 +58,7 @@ while True:
 
 date_start=year+'-'+month+'-01'
 date_end=year+'-'+month+'-'+day_all
-
+c = 1
 for i in range(int(day),int(day1)+1):
     d=i
     if d<10:
@@ -70,7 +70,7 @@ for i in range(int(day),int(day1)+1):
     soup = BeautifulSoup(page.text,'lxml')
 
     more_for_100=100
-    c = 1
+
     while True:
         if len(soup.find_all("a", class_="Fw(b)"))==0:
             break
@@ -105,15 +105,22 @@ with open('finance_yahoo '+data_for_csv_name+'.csv', 'wb') as myfile:
 
 c=1
 for date,url in itertools.izip(dates,urls):
+
     page = requests.get(url)
     soup = BeautifulSoup(page.text,'lxml')
     #print soup.prettify()
+    try:
+        name=soup.find('h1',class_='D(ib) Fz(16px) Lh(18px)').text
+    except:
+        page = requests.get(url)
+        soup = BeautifulSoup(page.text,'lxml',from_encoding="iso-8859-8")
+        name=soup.find('h1',class_='D(ib) Fz(16px) Lh(18px)').text
 
-    name=soup.find('h1',class_='D(ib) Fz(16px) Lh(18px)').text
     company_name=re.search('(.*?) - (.*)',name).group(2)
     symbol=re.search('(.*?) - (.*)',name).group(1)
 
     current_day_stock_value=soup.find(class_='Trsdu(0.3s) Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(b)').text
+
     try:
         number2=soup.find(class_='Trsdu(0.3s) Fw(500) Fz(14px) C($dataRed)').text
     except:
@@ -121,9 +128,12 @@ for date,url in itertools.izip(dates,urls):
             number2=soup.find(class_='Trsdu(0.3s) Fw(500) Fz(14px) C($dataGreen)').text
         except:
             number2=soup.find(class_='Trsdu(0.3s) Fw(500) Fz(14px)').text
-
-    actual_day_change=re.search('(.*)[(](.*)[)]',number2).group(1)
-    percentage_day_change=re.search('(.*)[(](.*)[)]',number2).group(2)
+    try:
+        actual_day_change=re.search('(.*)[(](.*)[)]',number2).group(1)
+        percentage_day_change=re.search('(.*)[(](.*)[)]',number2).group(2)
+    except:
+        actual_day_change=''
+        percentage_day_change=''
 
     previous_close=soup.find('td',class_='Ta(end) Fw(600) Lh(14px)',attrs={"data-test" : "PREV_CLOSE-value"}).text
     open1=soup.find('td',class_='Ta(end) Fw(600) Lh(14px)',attrs={"data-test" : "OPEN-value"}).text
@@ -147,31 +157,31 @@ for date,url in itertools.izip(dates,urls):
     print c
     print date
     print company_name
-    print symbol
-    print '------------'
-    print current_day_stock_value
-    print actual_day_change
-    print percentage_day_change
-    print '------------'
-    print previous_close
-    print open1
-    print bid
-    print ask
-    print days_range
-    print week_range_52
-    print volume
-    print avg_volume
-    print '------------'
-    print market_cap
-    print beta_3y_monthly
-    print pe_ratio_ttm
-    print eps_ttm
-    print earnings_date
-    print forward_dividend_yield
-    print ex_dividend_date
-    print target_est_1y
+    #print symbol
+    #print '------------'
+    #print current_day_stock_value
+    #print actual_day_change
+    #print percentage_day_change
+    #print '------------'
+    #print previous_close
+    #print open1
+    #print bid
+    #print ask
+    #print days_range
+    #print week_range_52
+    #print volume
+    #print avg_volume
+    #print '------------'
+    #print market_cap
+    #print beta_3y_monthly
+    #print pe_ratio_ttm
+    #print eps_ttm
+    #print earnings_date
+    #print forward_dividend_yield
+    #print ex_dividend_date
+    #print target_est_1y
 
-    print url
+    #print url
     c+=1
 
     with open('finance_yahoo '+data_for_csv_name+'.csv', 'ab') as myfile:
