@@ -108,13 +108,16 @@ for date,url in itertools.izip(dates,urls):
 
     page = requests.get(url)
     soup = BeautifulSoup(page.text,'lxml')
-    #print soup.prettify()
+    print soup.prettify()
     try:
         name=soup.find('h1',class_='D(ib) Fz(16px) Lh(18px)').text
     except:
-        page = requests.get(url)
-        soup = BeautifulSoup(page.text,'lxml',from_encoding="iso-8859-8")
-        name=soup.find('h1',class_='D(ib) Fz(16px) Lh(18px)').text
+        try:
+            page = requests.get(url)
+            soup = BeautifulSoup(page.text,'lxml',from_encoding="iso-8859-8")
+            name=soup.find('h1',class_='D(ib) Fz(16px) Lh(18px)').text
+        except:
+            continue
 
     company_name=re.search('(.*?) - (.*)',name).group(2)
     symbol=re.search('(.*?) - (.*)',name).group(1)
